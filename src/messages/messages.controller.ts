@@ -8,13 +8,22 @@ import {
   Post,
   Put,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { UpdateMessageDto } from './entities/dto/update-message.dto';
 import { CreateMessageDto } from './entities/dto/create-message.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { addHeaderInterceptor } from 'src/common/interceptors/add-header.interceptor';
+import { TimingConnectionInterceptor } from 'src/common/interceptors/timing-connection.interceptor';
+import { ErrorhandlingInterceptor } from 'src/common/interceptors/erro-handling.interceptor';
 
 @Controller('messages')
+@UseInterceptors(
+  addHeaderInterceptor,
+  TimingConnectionInterceptor,
+  ErrorhandlingInterceptor,
+)
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 

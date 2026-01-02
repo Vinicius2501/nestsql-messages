@@ -17,12 +17,16 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { addHeaderInterceptor } from 'src/common/interceptors/add-header.interceptor';
 import { TimingConnectionInterceptor } from 'src/common/interceptors/timing-connection.interceptor';
 import { ErrorhandlingInterceptor } from 'src/common/interceptors/erro-handling.interceptor';
+import { SimpleCacheInterceptor } from 'src/common/interceptors/simple-cache.interceptor';
+import { ChangeDataInterceptor } from 'src/common/interceptors/change-data.interceptor';
 
 @Controller('messages')
 @UseInterceptors(
   addHeaderInterceptor,
   TimingConnectionInterceptor,
   ErrorhandlingInterceptor,
+  ChangeDataInterceptor,
+  SimpleCacheInterceptor,
 )
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}

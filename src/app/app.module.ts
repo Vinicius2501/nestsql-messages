@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MessagesModule } from 'src/messages/messages.module';
@@ -6,6 +6,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MessageEntity } from 'src/messages/entities/message.entity';
 import { PeopleModule } from 'src/people/people.module';
+import { SimpleMiddleware } from 'src/common/middlewares/simple.middleware';
+import { MyExceptionFilter } from 'src/common/filters/my-exception.filter';
+import { IsAdminGuard } from 'src/common/guards/is-admin.guard';
 
 @Module({
   imports: [
@@ -35,6 +38,20 @@ import { PeopleModule } from 'src/people/people.module';
     PeopleModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: 'APP_FILTER',
+      useClass: MyExceptionFilter,
+    },
+    {
+      provide: 'APP_GUARD',
+      useClass: IsAdminGuard,
+    },
+  ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(SimpleMiddleware).forRoutes('*');
+  }
+}

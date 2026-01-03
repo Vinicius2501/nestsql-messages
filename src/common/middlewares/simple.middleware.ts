@@ -15,7 +15,7 @@ export class SimpleMiddleware implements NestMiddleware {
       id: 1,
       name: 'Vinicius Vasconcelos',
       prefix: 'VV',
-      role: 'user',
+      role: 'admin',
     };
 
     next();

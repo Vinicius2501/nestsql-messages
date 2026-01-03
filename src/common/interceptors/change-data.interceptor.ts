@@ -9,7 +9,6 @@ export class ChangeDataInterceptor implements NestInterceptor {
     next: CallHandler<any>,
   ): Observable<any> | Promise<Observable<any>> {
     const request = context.switchToHttp().getRequest();
-    console.log(`ChangeDataInterceptor - ${request.method} ${request.url}`);
 
     return next.handle().pipe(
       map((data) => {
